@@ -9,9 +9,11 @@ var parse = require('csv-parse');
 var csvData=[];
 
 
-
-
 app.get('/', (req, res) => {
+    res.send('Welcome')
+});
+
+app.get('/contacts', (req, res) => {
     console.log('---',req.query.name)
     console.log('running...')
     // res.send('Welcome');
@@ -19,7 +21,8 @@ app.get('/', (req, res) => {
     fs.createReadStream('file.csv')
     .pipe(parse({delimiter: ','}))
     .on('data', function(csvrow) {
-        if(csvrow[0] === req.query.name) {
+
+        if(req.query && csvrow[0] === req.query.name) {
             console.log(csvrow[1]);
             res.send('Name: ' + csvrow[0] + '\n' + 'Phone: ' + csvrow[1])
         }
